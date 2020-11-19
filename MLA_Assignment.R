@@ -60,6 +60,7 @@ abline(h = (mean(clust3$height)+(3*sd(clust3$height))), lty=2, col=2)
 
 ################################################################################################################################################
 #Male Data Only
+library(dplyr)
 male_data <- heart_data %>% filter(Sex==1)
 male_heart_data_clustering<-male_data[,c(1,3,4,6)]
 male_HRD_dis <- dist(male_heart_data_clustering, method="euclidian")
@@ -83,3 +84,38 @@ abline(h = (mean(clust2M$height)+(3*sd(clust2M$height))), lty=2, col=2)
 clust3M <- hclust(male_HRD_dis, method = "average")
 plot(clust3M)
 abline(h = (mean(clust3M$height)+(3*sd(clust3M$height))), lty=2, col=2)
+clust3M_label <- cutree(clust3M, h=(mean(clust3M$height)+(3*sd(clust3M$height))))
+palette(rainbow(10))
+plot(male_data[,2], male_data[,3], col = clust3M_label)
+pairs(male_heart_data_clustering, col = clust3M_label)
+
+################################################################################################################################################
+#Female Data Only
+library(dplyr)
+female_data <- heart_data %>% filter(Sex==2)
+female_heart_data_clustering<-female_data[,c(1,3,4,6)]
+female_HRD_dis <- dist(female_heart_data_clustering, method="euclidian")
+female_HRD_dis_mat <- as.matrix(female_HRD_dis)
+
+#Good
+clust1F <- hclust(female_HRD_dis, method = "complete")
+plot(clust1F)
+abline(h = (mean(clust1F$height)+(3*sd(clust1F$height))), lty=2, col=2)
+clust1F_label <- cutree(clust1F, h=(mean(clust1F$height)+(3*sd(clust1F$height))))
+palette(rainbow(10))
+plot(female_data[,2], male_data[,3], col = clust1F_label)
+pairs(female_heart_data_clustering, col = clust1F_label)
+
+#Useless
+clust2F <- hclust(female_HRD_dis, method = "single")
+plot(clust2F)
+abline(h = (mean(clust2F$height)+(3*sd(clust2F$height))), lty=2, col=2)
+
+#Good
+clust3F <- hclust(female_HRD_dis, method = "average")
+plot(clust3F)
+abline(h = (mean(clust3F$height)+(3*sd(clust3F$height))), lty=2, col=2)
+clust3F_label <- cutree(clust3F, h=(mean(clust3F$height)+(3*sd(clust3F$height))))
+palette(rainbow(10))
+plot(female_data[,2], female_data[,3], col = clust3F_label)
+pairs(female_heart_data_clustering, col = clust3F_label)
