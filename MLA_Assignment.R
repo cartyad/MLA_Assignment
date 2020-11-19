@@ -33,8 +33,9 @@ pairs(iris[,1:4],col=iris[,5])
 pairs(newiris,col=iris[,5])
 
 ################################################################################################################################################
-################################################################################################################################################
 #HIERARCHICAL CLUSTERING:
+################################################################################################################################################
+#ALL Data
 heart_data_clustering<-heart_data[,c(1,3,4,6)]
 HRD_dis <- dist(heart_data_clustering, method="euclidian")
 HRD_dis_mat <- as.matrix(HRD_dis)
@@ -52,7 +53,7 @@ pairs(heart_data_clustering, col = clust1_label)
 clust3 <- hclust(HRD_dis, method = "average")
 plot(clust3)
 abline(h = (mean(clust3$height)+(3*sd(clust3$height))), lty=2, col=2)
-
+################################################################################################################################################
 ################################################################################################################################################
 #Male Data Only
 library(dplyr)
@@ -122,7 +123,7 @@ palette(rainbow(10))
 plot(EI_data[,2], EI_data[,3], col = clust1EI_label)
 pairs(EI_heart_data_clustering, col = clust1EI_label)
 
-#Good
+#Bad
 clust3EI <- hclust(EI_HRD_dis, method = "average")
 plot(clust3EI)
 abline(h = (mean(clust3EI$height)+(3*sd(clust3EI$height))), lty=2, col=2)
@@ -131,4 +132,40 @@ palette(rainbow(10))
 plot(EI_data[,2], EI_data[,3], col = clust3EI_label)
 pairs(EI_heart_data_clustering, col = clust3EI_label)
 
+################################################################################################################################################
+#Not Exercise Induced ~ Not Very Useful
+library(dplyr)
+EIN_data <- heart_data %>% filter(ExerciseInduced==2)
+EIN_heart_data_clustering<-EIN_data[,c(1,3,4,6)]
+EIN_HRD_dis <- dist(EIN_heart_data_clustering, method="euclidian")
+EIN_HRD_dis_mat <- as.matrix(EIN_HRD_dis)
+
+#Good OF THE BAD
+clust1EIN <- hclust(EIN_HRD_dis, method = "complete")
+plot(clust1EIN)
+abline(h = (mean(clust1EIN$height)+(3*sd(clust1EIN$height))), lty=2, col=2)
+clust1EIN_label <- cutree(clust1EIN, h=(mean(clust1EIN$height)+(3*sd(clust1EIN$height))))
+palette(rainbow(10))
+plot(EIN_data[,2], EIN_data[,3], col = clust1EIN_label)
+pairs(EIN_heart_data_clustering, col = clust1EIN_label)
+
+#Useless
+clust2EIN <- hclust(EIN_HRD_dis, method = "single")
+plot(clust2EIN)
+abline(h = (mean(clust2EIN$height)+(3*sd(clust2EIN$height))), lty=2, col=2)
+clust2EIN_label <- cutree(clust2EIN, h=(mean(clust2EIN$height)+(3*sd(clust2EIN$height))))
+palette(rainbow(10))
+plot(EIN_data[,2], EIN_data[,3], col = clust2EIN_label)
+pairs(EIN_heart_data_clustering, col = clust2EIN_label)
+
+#Bad
+clust3EIN <- hclust(EIN_HRD_dis, method = "average")
+plot(clust3EIN)
+abline(h = (mean(clust3EIN$height)+(3*sd(clust3EIN$height))), lty=2, col=2)
+clust3EIN_label <- cutree(clust3EIN, h=(mean(clust3EIN$height)+(3*sd(clust3EIN$height))))
+palette(rainbow(10))
+plot(EIN_data[,2], EIN_data[,3], col = clust3EIN_label)
+pairs(EIN_heart_data_clustering, col = clust3EIN_label)
+
+################################################################################################################################################
 ################################################################################################################################################
