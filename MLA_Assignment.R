@@ -33,11 +33,10 @@ pairs(iris[,1:4],col=iris[,5])
 pairs(newiris,col=iris[,5])
 
 
-
+################################################################################################################################################
 #HIERARCHICAL CLUSTERING:
-#DISSIMILIARITY
-heart_data_clustering<-heart_data[,1:9]
-HRD_dis <- dist(heart_data_clustering, method="euclidean")
+heart_data_clustering<-heart_data[,c(1,3,4,6)]
+HRD_dis <- dist(heart_data_clustering, method="euclidian")
 HRD_dis_mat <- as.matrix(HRD_dis)
 
 #Good
@@ -46,7 +45,7 @@ plot(clust1)
 abline(h = (mean(clust1$height)+(3*sd(clust1$height))), lty=2, col=2)
 clust1_label <- cutree(clust1, h=(mean(clust1$height)+(3*sd(clust1$height))))
 palette(rainbow(10))
-plot(heart_data[,1], heart_data[,10], col = clust1_label)
+plot(heart_data[,2], heart_data[,3], col = clust1_label)
 pairs(heart_data_clustering, col = clust1_label)
 
 #Useless
