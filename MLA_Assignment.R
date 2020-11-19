@@ -48,11 +48,6 @@ palette(rainbow(10))
 plot(heart_data[,2], heart_data[,3], col = clust1_label)
 pairs(heart_data_clustering, col = clust1_label)
 
-#Useless
-clust2 <- hclust(HRD_dis, method = "single")
-plot(clust2)
-abline(h = (mean(clust2$height)+(3*sd(clust2$height))), lty=2, col=2)
-
 #Good
 clust3 <- hclust(HRD_dis, method = "average")
 plot(clust3)
@@ -74,11 +69,6 @@ clust1M_label <- cutree(clust1M, h=(mean(clust1M$height)+(3*sd(clust1M$height)))
 palette(rainbow(10))
 plot(male_data[,2], male_data[,3], col = clust1M_label)
 pairs(male_heart_data_clustering, col = clust1M_label)
-
-#Useless
-clust2M <- hclust(male_HRD_dis, method = "single")
-plot(clust2M)
-abline(h = (mean(clust2M$height)+(3*sd(clust2M$height))), lty=2, col=2)
 
 #Good
 clust3M <- hclust(male_HRD_dis, method = "average")
@@ -103,13 +93,8 @@ plot(clust1F)
 abline(h = (mean(clust1F$height)+(3*sd(clust1F$height))), lty=2, col=2)
 clust1F_label <- cutree(clust1F, h=(mean(clust1F$height)+(3*sd(clust1F$height))))
 palette(rainbow(10))
-plot(female_data[,2], male_data[,3], col = clust1F_label)
+plot(female_data[,2], female_data[,3], col = clust1F_label)
 pairs(female_heart_data_clustering, col = clust1F_label)
-
-#Useless
-clust2F <- hclust(female_HRD_dis, method = "single")
-plot(clust2F)
-abline(h = (mean(clust2F$height)+(3*sd(clust2F$height))), lty=2, col=2)
 
 #Good
 clust3F <- hclust(female_HRD_dis, method = "average")
@@ -119,3 +104,4 @@ clust3F_label <- cutree(clust3F, h=(mean(clust3F$height)+(3*sd(clust3F$height)))
 palette(rainbow(10))
 plot(female_data[,2], female_data[,3], col = clust3F_label)
 pairs(female_heart_data_clustering, col = clust3F_label)
+
