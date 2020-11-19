@@ -182,10 +182,19 @@ plot(clust1Fast)
 abline(h = (mean(clust1Fast$height)+(3*sd(clust1Fast$height))), lty=2, col=2)
 clust1Fast_label <- cutree(clust1Fast, h=(mean(clust1Fast$height)+(3*sd(clust1Fast$height))))
 palette(rainbow(10))
-plot(fast_data[,2], fast_data[,3], col = clust1F_label)
+plot(fast_data[,2], fast_data[,3], col = clust1Fast_label)
 pairs(fast_heart_data_clustering, col = clust1Fast_label)
 
-#Good
+#Useless
+clust2Fast <- hclust(fast_HRD_dis, method = "single")
+plot(clust2Fast)
+abline(h = (mean(clust2Fast$height)+(3*sd(clust2Fast$height))), lty=2, col=2)
+clust2Fast_label <- cutree(clust2Fast, h=(mean(clust2Fast$height)+(3*sd(clust2Fast$height))))
+palette(rainbow(10))
+plot(fast_data[,2], fast_data[,3], col = clust2Fast_label)
+pairs(fast_heart_data_clustering, col = clust2Fast_label)
+
+#Bad
 clust3Fast <- hclust(fast_HRD_dis, method = "average")
 plot(clust3Fast)
 abline(h = (mean(clust3Fast$height)+(3*sd(clust3Fast$height))), lty=2, col=2)
@@ -193,3 +202,38 @@ clust3Fast_label <- cutree(clust3Fast, h=(mean(clust3Fast$height)+(3*sd(clust3Fa
 palette(rainbow(10))
 plot(fast_data[,2], fast_data[,3], col = clust3Fast_label)
 pairs(fast_heart_data_clustering, col = clust3Fast_label)
+
+################################################################################################################################################
+#Fasting Data Only
+library(dplyr)
+nfast_data <- heart_data %>% filter(FastingBloodSugar==2)
+nfast_heart_data_clustering<-nfast_data[,c(1,3,4,6)]
+nfast_HRD_dis <- dist(nfast_heart_data_clustering, method="euclidian")
+nfast_HRD_dis_mat <- as.matrix(nfast_HRD_dis)
+
+#Good
+clust1nFast <- hclust(nfast_HRD_dis, method = "complete")
+plot(clust1nFast)
+abline(h = (mean(clust1nFast$height)+(3*sd(clust1nFast$height))), lty=2, col=2)
+clust1nFast_label <- cutree(clust1nFast, h=(mean(clust1nFast$height)+(3*sd(clust1nFast$height))))
+palette(rainbow(10))
+plot(nfast_data[,2], nfast_data[,3], col = clust1nFast_label)
+pairs(nfast_heart_data_clustering, col = clust1nFast_label)
+
+#Useless
+clust2nFast <- hclust(nfast_HRD_dis, method = "single")
+plot(clust2nFast)
+abline(h = (mean(clust2nFast$height)+(3*sd(clust2nFast$height))), lty=2, col=2)
+clust2nFast_label <- cutree(clust2nFast, h=(mean(clust2nFast$height)+(3*sd(clust2nFast$height))))
+palette(rainbow(10))
+plot(nfast_data[,2], nfast_data[,3], col = clust2nFast_label)
+pairs(nfast_heart_data_clustering, col = clust2nFast_label)
+
+#Bad
+clust3nFast <- hclust(nfast_HRD_dis, method = "average")
+plot(clust3nFast)
+abline(h = (mean(clust3nFast$height)+(3*sd(clust3nFast$height))), lty=2, col=2)
+clust3nFast_label <- cutree(clust3nFast, h=(mean(clust3nFast$height)+(3*sd(clust3nFast$height))))
+palette(rainbow(10))
+plot(nfast_data[,2], nfast_data[,3], col = clust3nFast_label)
+pairs(nfast_heart_data_clustering, col = clust3nFast_label)
