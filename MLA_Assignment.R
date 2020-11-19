@@ -169,3 +169,27 @@ pairs(EIN_heart_data_clustering, col = clust3EIN_label)
 
 ################################################################################################################################################
 ################################################################################################################################################
+#Fasting Data Only
+library(dplyr)
+fast_data <- heart_data %>% filter(FastingBloodSugar==1)
+fast_heart_data_clustering<-fast_data[,c(1,3,4,6)]
+fast_HRD_dis <- dist(fast_heart_data_clustering, method="euclidian")
+fast_HRD_dis_mat <- as.matrix(fast_HRD_dis)
+
+#Good
+clust1Fast <- hclust(fast_HRD_dis, method = "complete")
+plot(clust1Fast)
+abline(h = (mean(clust1Fast$height)+(3*sd(clust1Fast$height))), lty=2, col=2)
+clust1Fast_label <- cutree(clust1Fast, h=(mean(clust1Fast$height)+(3*sd(clust1Fast$height))))
+palette(rainbow(10))
+plot(fast_data[,2], fast_data[,3], col = clust1F_label)
+pairs(fast_heart_data_clustering, col = clust1Fast_label)
+
+#Good
+clust3Fast <- hclust(fast_HRD_dis, method = "average")
+plot(clust3Fast)
+abline(h = (mean(clust3Fast$height)+(3*sd(clust3Fast$height))), lty=2, col=2)
+clust3Fast_label <- cutree(clust3Fast, h=(mean(clust3Fast$height)+(3*sd(clust3Fast$height))))
+palette(rainbow(10))
+plot(fast_data[,2], fast_data[,3], col = clust3Fast_label)
+pairs(fast_heart_data_clustering, col = clust3Fast_label)
