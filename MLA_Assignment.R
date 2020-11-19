@@ -37,6 +37,9 @@ pairs(newiris,col=iris[,5])
 ################################################################################################################################################
 #ALL Data
 heart_data_clustering<-heart_data[,c(1,3,4,6)]
+#Standardising
+#heart_data_clust<-heart_data[,c(1,3,4,6)]
+#heart_data_clustering <-scale(heart_data_clust, center = TRUE, scale = TRUE)
 HRD_dis <- dist(heart_data_clustering, method="euclidian")
 HRD_dis_mat <- as.matrix(HRD_dis)
 
@@ -53,6 +56,10 @@ pairs(heart_data_clustering, col = clust1_label)
 clust3 <- hclust(HRD_dis, method = "average")
 plot(clust3)
 abline(h = (mean(clust3$height)+(3*sd(clust3$height))), lty=2, col=2)
+clust3_label <- cutree(clust3, h=(mean(clust3$height)+(3*sd(clust3$height))))
+palette(rainbow(10))
+plot(heart_data[,2], heart_data[,3], col = clust3_label)
+pairs(heart_data_clustering, col = clust3_label)
 ################################################################################################################################################
 ################################################################################################################################################
 #Male Data Only
