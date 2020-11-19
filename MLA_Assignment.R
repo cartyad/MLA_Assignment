@@ -237,3 +237,6 @@ clust3nFast_label <- cutree(clust3nFast, h=(mean(clust3nFast$height)+(3*sd(clust
 palette(rainbow(10))
 plot(nfast_data[,2], nfast_data[,3], col = clust3nFast_label)
 pairs(nfast_heart_data_clustering, col = clust3nFast_label)
+
+################################################################################################################################################
+################################################################################################################################################
