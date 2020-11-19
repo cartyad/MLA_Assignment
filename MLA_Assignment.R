@@ -58,3 +58,28 @@ clust3 <- hclust(HRD_dis, method = "average")
 plot(clust3)
 abline(h = (mean(clust3$height)+(3*sd(clust3$height))), lty=2, col=2)
 
+################################################################################################################################################
+#Male Data Only
+male_data <- heart_data %>% filter(Sex==1)
+male_heart_data_clustering<-male_data[,c(1,3,4,6)]
+male_HRD_dis <- dist(male_heart_data_clustering, method="euclidian")
+male_HRD_dis_mat <- as.matrix(male_HRD_dis)
+
+#Good
+clust1M <- hclust(male_HRD_dis, method = "complete")
+plot(clust1M)
+abline(h = (mean(clust1M$height)+(3*sd(clust1M$height))), lty=2, col=2)
+clust1M_label <- cutree(clust1M, h=(mean(clust1M$height)+(3*sd(clust1M$height))))
+palette(rainbow(10))
+plot(male_data[,2], male_data[,3], col = clust1M_label)
+pairs(male_heart_data_clustering, col = clust1M_label)
+
+#Useless
+clust2M <- hclust(male_HRD_dis, method = "single")
+plot(clust2M)
+abline(h = (mean(clust2M$height)+(3*sd(clust2M$height))), lty=2, col=2)
+
+#Good
+clust3M <- hclust(male_HRD_dis, method = "average")
+plot(clust3M)
+abline(h = (mean(clust3M$height)+(3*sd(clust3M$height))), lty=2, col=2)
