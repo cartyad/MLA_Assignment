@@ -32,7 +32,7 @@ plot(myts[, 1], myts[, 2], col=myts[, 5])
 pairs(iris[,1:4],col=iris[,5])
 pairs(newiris,col=iris[,5])
 
-
+################################################################################################################################################
 ################################################################################################################################################
 #HIERARCHICAL CLUSTERING:
 heart_data_clustering<-heart_data[,c(1,3,4,6)]
@@ -104,4 +104,31 @@ clust3F_label <- cutree(clust3F, h=(mean(clust3F$height)+(3*sd(clust3F$height)))
 palette(rainbow(10))
 plot(female_data[,2], female_data[,3], col = clust3F_label)
 pairs(female_heart_data_clustering, col = clust3F_label)
+################################################################################################################################################
+################################################################################################################################################
+#Exercise Induced
+library(dplyr)
+EI_data <- heart_data %>% filter(ExerciseInduced==1)
+EI_heart_data_clustering<-EI_data[,c(1,3,4,6)]
+EI_HRD_dis <- dist(EI_heart_data_clustering, method="euclidian")
+EI_HRD_dis_mat <- as.matrix(EI_HRD_dis)
 
+#Good
+clust1EI <- hclust(EI_HRD_dis, method = "complete")
+plot(clust1EI)
+abline(h = (mean(clust1EI$height)+(3*sd(clust1EI$height))), lty=2, col=2)
+clust1EI_label <- cutree(clust1EI, h=(mean(clust1EI$height)+(3*sd(clust1EI$height))))
+palette(rainbow(10))
+plot(EI_data[,2], EI_data[,3], col = clust1EI_label)
+pairs(EI_heart_data_clustering, col = clust1EI_label)
+
+#Good
+clust3EI <- hclust(EI_HRD_dis, method = "average")
+plot(clust3EI)
+abline(h = (mean(clust3EI$height)+(3*sd(clust3EI$height))), lty=2, col=2)
+clust3EI_label <- cutree(clust3EI, h=(mean(clust3EI$height)+(3*sd(clust3EI$height))))
+palette(rainbow(10))
+plot(EI_data[,2], EI_data[,3], col = clust3EI_label)
+pairs(EI_heart_data_clustering, col = clust3EI_label)
+
+################################################################################################################################################
