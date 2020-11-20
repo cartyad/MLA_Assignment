@@ -10,7 +10,7 @@ dim(heart_data)
 ################################################################################################################################################
 #PRINCIPLE COMPONANTS ANALYSIS:
 ################################################################################################################################################
-HRD <- prcomp(heart_data[, 1:9])
+HRD <- prcomp(heart_data[, c(1,3,4,6)])
 HRD
 print(HRD)
 summary(HRD)
@@ -23,16 +23,33 @@ plot(fisher_var_explain, type = "b", main = "Heart Data:",
      xlab = "No. of components", ylab = "Proportion of variance explained", xaxt = "n")
 axis(1, at = 1:9)
 #PROJECTING THE DATA ONTO THE PRINCIPLE COMPONENTS
-?predict
 newdata <- predict(HRD)
 head(newdata, n = 10)
 
 ###NOT FINISHED###
-#VISUALISING THE RESULTS
-plot(myts[, 1], myts[, 2], col=myts[, 5])
+#VISUALISING THE RESULT10
+plot(heart_data[, 4], heart_data[, 6], col=heart_data[, 10])
   legend(6.5, 4.5, legend = levels(iris[, 5]), col = c(1, 2, 3), pch = 1)
-pairs(iris[,1:4],col=iris[,5])
-pairs(newiris,col=iris[,5])
+pairs(heart_data[, c(1,3,4,6)],col=heart_data[,10])
+pairs(newdata,col=heart_data[,10])
+
+plot(newdata[,1], newdata[,2], type="n", xlab="PC1", ylab="PC2")
+text(newdata[,1], newdata[,2], labels=substr(heart_data[,5],1,2), col=as.integer(heart_data[,5]))
+
+#PCA USING CORRELATION
+eigen(cor(heart_data[, c(1,3,4,6)]))
+scaled<-prcomp(heart_data[, c(1,3,4,6)], scale=TRUE)
+scaled
+plot(scaled, main = "Heart Data")
+plot(scaled, main = "Heart Data", type = "l")
+fisher_var_explain1 <- (scaled$sdev^2) / (sum(scaled$sdev^2))
+plot(fisher_var_explain1, type = "b", main = "Heart Data:", 
+     xlab = "No. of components", ylab = "Proportion of variance explained", xaxt = "n")
+axis(1, at = 1:9)
+
+diag(cov(heart_data[, c(1,3,4,6)]))
+c(var(heart_data[, 1]), var(heart_data[,3]), var(heart_data[, 4]), var(heart_data[, 6]))
+
 
 ################################################################################################################################################
 #HIERARCHICAL CLUSTERING:
