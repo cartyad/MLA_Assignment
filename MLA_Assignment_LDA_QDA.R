@@ -26,21 +26,27 @@ plot(heart_data[,c(1,3,4,6)], col = as.factor(heart_data[,10]))
 
 #Before we use LDA, we need to split the data into training, and test sets. (Why don't we need a validation set?)
 #For this example we will try an 80:20 split.
-strain <- heart_data[c(1:150), ]
-stest <- heart_data[c(151:270),]
+strain_index <- c(1:150) 
+stest_index <- c(151:270)
+
+strain <- heart_data[strain_index , ]
+stest <- heart_data[stest_index,]
 
 train <- rbind(class1data[1:75,],class2data[1:60,])
 test <- rbind(class1data[76:150,],class2data[61:120,])
 
 
 #We can then train our classifier:
-lsol <- lda(train[, c(1,3,4,6,8,9)], grouping = train[,10])
+lsol <- lda(strain[, 1:9], grouping = strain[,10])
 #The above trains the classifier on the second and third columns of the training data strain using the classifier
 #information in the first column strain[, 1]
 
 #If you enter the following, you will be returned with a list of summary information concerning the computation:
+lsol
 lsol$prior
 lsol$means
+class_agree <- table(lsol, heart_data[strain_index,10])
+class_agree
 
 #To estimate the covariance matrices for both subsets of salmon data, enter the following:
 n_class_1 <- length(class1data)
@@ -58,7 +64,7 @@ lsol$scaling
 #predict(lsol, c(120, 380))
 
 #To automatically predict the test data set enter:
-predict(lsol, test[, c(1,3,4,6)])
+predict(lsol, test[, c(1,3,4,6,8,9)])
 ################ Not Finished ################
 
 #Cross-Validation
@@ -71,10 +77,15 @@ plot(heart_data[, c(1,3,4,6)], col = as.factor(heart_data[, 10]), pch = as.numer
 #Quadratic Discriminant Analysis
 #difference between QDA and LDA is that the former permits each group distribution to have its own covariance 
 #matrix, whilst the latter assumes a common covariance matrix for all group distributions
-qsol <- qda(train[, c(1,3,4,6)], grouping = train[, 10])
-predict(qsol, test[, c(1,3,4,6)])
+train2 <- rbind(class1data[1:75,],class2data[1:60,])
+train2<-scale(train2[,c(1,3,4,6)])
+test2 <- rbind(class1data[76:150,],class2data[61:120,])
+test2<-scale(test2[,c(1,3,4,6)])
+qsol <- qda(train2, grouping = train[, 10])
+predict(qsol, test2)
 #Again you will notice in an 80:20 training:testing split we have achieved 100% correct classification
-qsol_cv <- qda(heart_data[,c(1,3,4,6)], grouping = heart_data[, 10], CV = TRUE)
+scaleData<-scale(heart_data[,c(1,3,4,6)])
+qsol_cv <- qda(scaleData, grouping = heart_data[, 10], CV = TRUE)
 plot(heart_data[, c(1,3,4,6)], col = as.factor(heart_data[, 10]), pch = as.numeric(qsol_cv$class))
 plot(heart_data[, c(1,3)], col = as.factor(heart_data[, 10]), pch = as.numeric(qsol_cv$class))
 plot(heart_data[, c(1,4)], col = as.factor(heart_data[, 10]), pch = as.numeric(qsol_cv$class))

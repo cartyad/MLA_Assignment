@@ -6,16 +6,32 @@ heart_data<-read.csv("C:/Users/carty/Documents/Third Year MSISS/MLA Assignment/h
 heart_data
 summary(heart_data)
 dim(heart_data)
+
+#install.packages("factoextra")
+library(flexclust)
+library(factoextra)
+#install.packages("caret")
+library(caret)
+library(devtools)
+library(MASS)
+#install.packages("ggbiplot")
+require(ggbiplot)
+#install.packages("ggplot2")
+require(ggplot2)
+install.packages("combinedist")
+
 ################################################################################################################################################
 #HIERARCHICAL CLUSTERING:
 ################################################################################################################################################
 #ALL Data
-heart_data_clustering<-heart_data[,c(1,3,4,6)]
+heart_data_clustering<-heart_data
 
 #Standardising
-#heart_data_clust<-heart_data[,c(1,3,4,6)]
-#heart_data_clustering <-scale(heart_data_clust, center = TRUE, scale = TRUE)
+#heart_data_clust<-heart_data
+#heart_data_clustering <-scale(heart_data_clust[,c(1,3,4,6,9)], center = TRUE, scale = TRUE)
+#heart_data_clustering <-cbind(heart_data_clustering ,heart_data[,c(2,5,7,8,10)])
 
+?dist
 #HRD_dis <- dist(heart_data_clustering, method="euclidean")
 HRD_dis <- dist(heart_data_clustering, method="manhattan")
 HRD_dis_mat <- as.matrix(HRD_dis)
@@ -34,6 +50,52 @@ clust3 <- hclust(HRD_dis, method = "average")
 plot(clust3)
 abline(h = (mean(clust3$height)+(3*sd(clust3$height))), lty=2, col=2)
 clust3_label <- cutree(clust3, h=(mean(clust3$height)+(3*sd(clust3$height))))
+
+#clust3_label <- cutree(clust3,k=3)
+clust_label<-clust3_label
+clustAll<-clust3
+clust_label
+######
+#classDivision = sapply(unique(clust_label), function(g)heart_data_clustering$Class[clust_label ==g])
+classDivision = sapply(unique(clust_label), function(g)heart_data_clustering$MaxHeartRate[clust_label ==g])
+classDivision
+counts = sapply(2:6,function(ncl)table(cutree(clustAll,ncl)))
+names(counts) = 2:6
+counts
+fviz_cluster(list(data = distanceFused, cluster = clust_label))
+group_5 = cutree(clustAll,5)
+table(group_4)
+aggregate(standard_heart,list(group_4),median)
+aggregate(heartDataCont,list(group_4),median)
+round(aggregate(heartData,list(group_5),mean),2)
+round(apply(heartData, 2, mean), 2)
+summary(heartData).mean
+g1 = c()
+g1 = classDivision[[1]]
+g2 = c()
+g2 = classDivision[[2]]
+g3 = c()
+g3 = classDivision[[3]]
+g4 = c()
+g4 = classDivision[[4]]
+g4
+g5 = c()
+g5 = classDivision[[5]]
+count1s = 0
+count2s = 0
+i =0
+for (i in 1:length(g1)){
+  if(g1[i] ==1)
+  {
+    count1s = count1s + 1
+  }
+  else{
+    count2s = count2s +1
+  }
+}
+count1s/ (count1s + count2s)
+######
+
 palette(rainbow(10))
 plot(heart_data[,2], heart_data[,3], col = clust3_label)
 pairs(heart_data_clustering, col = clust3_label)
@@ -43,7 +105,12 @@ pairs(heart_data_clustering, col = clust3_label)
 library(dplyr)
 male_data <- heart_data %>% filter(Sex==1)
 male_heart_data_clustering<-male_data[,c(1,3,4,6)]
-male_HRD_dis <- dist(male_heart_data_clustering, method="euclidian")
+
+#Scaling
+male_heart_data_clustering<-scale(male_heart_data_clustering,center = TRUE, scale = TRUE)
+
+#male_HRD_dis <- dist(male_heart_data_clustering, method="euclidian")
+male_HRD_dis <- dist(male_heart_data_clustering, method="manhattan")
 male_HRD_dis_mat <- as.matrix(male_HRD_dis)
 
 #Good
@@ -69,7 +136,12 @@ pairs(male_heart_data_clustering, col = clust3M_label)
 library(dplyr)
 female_data <- heart_data %>% filter(Sex==2)
 female_heart_data_clustering<-female_data[,c(1,3,4,6)]
+
+#Scaling
+#female_heart_data_clustering<-scale(female_heart_data_clustering)
+
 female_HRD_dis <- dist(female_heart_data_clustering, method="euclidian")
+#female_HRD_dis <- dist(female_heart_data_clustering, method="manhattan")
 female_HRD_dis_mat <- as.matrix(female_HRD_dis)
 
 #Good
